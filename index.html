@@ -1,0 +1,143 @@
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/github_ajax_service.css">
+    <title>Vue and Github</title>
+</head>
+<body>
+
+<div id="vueApp" class="container container-fluid" style="margin-top:80px">
+    <div class="row">
+        <div class="col-md-12">
+
+            <!--Main Panel-->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Github User Profile : <b style="color:white;font-weight:bolder">{{gitHubUserInfo.name}}</b>
+                    </h2>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img :src="gitHubUserInfo.avatar_url" class="img-responsive img-rounded">
+                        </div>
+                        <!--Section GitHub User Info-->
+                        <div class="col-md-6">
+                            <div class="panel-group" id="accordion" role="tablist">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading" role="tab" id="headingUserInfo">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                               href="#userInfo" aria-expanded="true" aria-controls="collapseOne">User
+                                                Info</a>
+                                        </h4>
+                                    </div>
+                                    <div id="userInfo" class="panel-collapse collapse in" role="tabpanel"
+                                         aria-labelledby="headingUserInfo">
+                                        <div class="panel-body" style="font-size: 12px">
+                                            <p>User Type : <b class="text-info">{{gitHubUserInfo.type}}</b></p>
+                                            <p>Location : <b class="text-info">{{gitHubUserInfo.location}}</b></p>
+                                            <p>Company : <b class="text-info">{{gitHubUserInfo.company}}</b></p>
+                                            <p>Website : <b class="text-info">{{gitHubUserInfo.blog}}</b></p>
+                                            <p>Bio :</p>
+                                            <div class="well text-info">{{gitHubUserInfo.bio}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-success">
+                                    <div class="panel-heading" role="tab" id="headingGithubAct">
+                                        <h4 class="panel-title">
+                                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                               href="#gitHubAct" aria-expanded="true" aria-controls="collapseOne">Activities</a>
+                                        </h4>
+                                    </div>
+                                    <div id="gitHubAct" class="panel-collapse collapse" role="tabpanel"
+                                         aria-labelledby="headingGithubAct">
+                                        <div class="panel-body" style="font-size: 12px">
+                                            <p>Repositories : <b class="text-info">{{gitHubUserInfo.public_repos}} </b>Repositories
+                                            </p>
+                                            <p>Gists : <b class="text-info">{{gitHubUserInfo.public_gists}}</b> Gists
+                                            </p>
+                                            <p>Followers : <b class="text-info">{{gitHubUserInfo.followers}}</b></p>
+                                            <p>Following : <b class="text-info">{{gitHubUserInfo.following}}</b></p>
+                                            <p>Created on : <b class="text-info">{{gitHubUserInfo.created_at}}</b></p>
+                                            <p>Last Updated : <b class="text-info">{{gitHubUserInfo.updated_at}}</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of Section GitHub User Info-->
+                    <div class="row">&nbsp;</div>
+
+
+                    <div class="row">
+                        <!-- Section Repositories-->
+                        <div class="col-md-12">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{gitHubUserInfo.name}} Repository List</h3>
+                                </div>
+                                <div class="panel panel-body">
+                                    <div class="panel-group" id="repoList" role="tablist">
+                                        <template v-for="(repo, idx) in gitHubUserRepoList">
+                                            <div class="panel panel-info" :class="">
+                                                <div class="panel-heading" role="tab" :id="'headingRepoInfo'+idx">
+                                                    <h4 class="panel-title">
+                                                        <a role="button" data-toggle="collapse" data-parent="#repoList"
+                                                           :href="'#repo'+idx" aria-expanded="true"
+                                                           :aria-controls="'collapse'+idx">
+                                                            {{repo.name}}</a>
+                                                    </h4>
+                                                </div>
+                                                <div :id="'repo'+idx" class="panel-collapse collapse"
+                                                     v-bind:class="{in : idx==0}" role="tabpanel"
+                                                     :aria-labelledby="'headingRepoInfo'+idx">
+                                                    <div class="panel-body">
+                                                        <div class="repo-description">
+                                                            <h5>Description</h5>
+                                                            <p>{{repo.description}}</p>
+                                                        </div>
+                                                        <div class="repo-url">{{repo.html_url}} <a target="_blank" class="glyphicon glyphicon-link" :href="repo.html_url"></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end of Section Repositories-->
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <!--Section etch other users -->
+                    <div class="row">
+                        <div class="col-md-6 text-right">
+                            Or get other github user
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" v-model="gitHubUserName">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary" @click="getGitHubUserInfo">Get Data</button>
+                        </div>
+                    </div>
+                    <!--End of fetch other GitHub user -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/vue/vue.min.js"></script>
+<script type="text/javascript" src="js/vue/lib/vue-resource.min.js"></script>
+<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/moment/moment.js"></script>
+<script type="text/javascript" src="js/vue/app/github_ajax_service.js"></script>
+</body>
+</html>

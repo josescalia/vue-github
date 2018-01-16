@@ -1,0 +1,15 @@
+.repo-description h5 {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.repo-description p {
+    text-align: justify;
+    font-size: 13px;
+    padding: 3px;
+}
+
+.repo-url {
+    color: darkblue;
+    font-size: 12px;
+}
